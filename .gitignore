@@ -1,0 +1,39 @@
+# Dependencies (root and any subfolder, e.g. scripts/node_modules)
+node_modules/
+**/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+*.lnk
+
+# Logs and temp
+*.log
+npm-debug.log*
+.npm
+.yarn-integrity
+
+# Environment / secrets (never commit)
+.env
+.env.local
+.env.*.local
+
+# Build / cache (if you ever add a build step that outputs to dist/ etc.)
+.cache/
+.turbo
+*.tsbuildinfo
+
+# Test coverage (if you add tests later)
+coverage/
+
+# IDE / editor
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+*~
+
+# Lint / format cache
+.eslintcache
+.prettiercache

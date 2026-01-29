@@ -6,8 +6,8 @@ class BlogWebsite
     constructor()
     {
         this.blogId = 0 ;
-        this.projectName = "Example" ;
-        this.projectRepoLink = "https://www.example.com/" ;
+        this.blogName = "Example" ;
+        this.blogRepoLink = "https://www.example.com/" ;
         this.authors = [] ;
         this.init() ;
     }
@@ -15,7 +15,7 @@ class BlogWebsite
     async init()
     {
         this.getBlogId() ;
-        await this.loadProjectInformation() ;
+        await this.loadBlogInformation() ;
         await this.loadTableOfContents() ;
         await this.loadBlog() ;
         this.setUpEventListeners() ;
@@ -28,31 +28,30 @@ class BlogWebsite
         this.blogId = Number.parseInt(idParam,10) || 0 ;
     }
 
-    async getProjectInformation()
+    async getBlogInformation()
     {
-        const response = await fetch("projectInformation.json") ;
+        const response = await fetch("blogInformation.json") ;
 
-        const projectInformationList = await response.json() ;
-        if(projectInformationList.length <=this.blogId) throw new Error("Incorrect project Id.") ;
-        const projectInformation = projectInformationList[this.blogId] ;
+        const blogInformationList = await response.json() ;
+        if(blogInformationList.length <= this.blogId) throw new Error("Incorrect blog Id.") ;
+        const blogInformation = blogInformationList[this.blogId] ;
 
-        /// getting rid of underscores for spaces
-        this.projectName = projectInformation.name ;
-        this.projectRepoLink = projectInformation.repoLink ;
-        this.authors = projectInformation.authors ;
+        this.blogName = blogInformation.name ;
+        this.blogRepoLink = blogInformation.repoLink ;
+        this.authors = blogInformation.authors ;
     }
 
-    loadProjectName()
+    loadBlogTitle()
     {
-        const projectNameElement = document.getElementById("project-name") ;
-        const temp = this.projectName.replace(/_/g," ") ;
-        projectNameElement.textContent = `${temp}` ;
+        const titleElement = document.getElementById("blog-name") ;
+        const temp = this.blogName.replace(/_/g," ") ;
+        titleElement.textContent = `${temp}` ;
     }
 
     loadRepoLink()
     {
         const repoLinkElement = document.getElementById("repo-link") ;
-        repoLinkElement.href = this.projectRepoLink ;
+        repoLinkElement.href = this.blogRepoLink ;
     }
 
     loadAuthorsList()
@@ -63,43 +62,32 @@ class BlogWebsite
         .join("") ;
     }
 
-    async loadProjectInformation()
+    async loadBlogInformation()
     {
-        await this.getProjectInformation() ;
-        this.loadProjectName() ;
+        await this.getBlogInformation() ;
+        this.loadBlogTitle() ;
         this.loadRepoLink() ;
         this.loadAuthorsList() ;
     }
 
-    setUpGoBackButton()
-    {
-        const goBackButton = document.getElementById("go-back-button") ;
-        goBackButton.addEventListener("click", () => {
-            if (window.history.length > 1) {
-                window.history.back()
-            } else {
-                window.location.href = "index.html"
-            }
-        })
-    }
-
     setUpEventListeners()
     {
-        this.setUpGoBackButton() ;
+        /* Nav bar matches homepage (Learn, Blogs, About); no Back button */
     } 
 
     async loadBlog()
     {
         const blogContent = document.getElementById("blog-content") ;
-        const response = await fetch(`blogsHTML/${this.projectName}.html`) ;
-        if (!response.ok) throw new Error(`Blog ${this.projectName} not found`) ;
-        blogContent.innerHTML = await response.text() ;
+        const response = await fetch(`blogsHTML/${this.blogName}.html`) ;
+        if (!response.ok) throw new Error(`Blog ${this.blogName} not found`) ;
+        const text = await response.text() ;
+        blogContent.innerHTML = text ;
     }
 
     async loadTableOfContents()
     {
-        const response = await fetch(`blogs/${this.projectName}.md`) ;
-        if (!response.ok) throw new Error(`Blog ${this.projectName} not found`) ;
+        const response = await fetch(`blogs/${this.blogName}.md`) ;
+        if (!response.ok) throw new Error(`Blog ${this.blogName} not found`) ;
         const markdownContent = await response.text() ;
 
         const tocElement = document.getElementById("table-of-contents") ;
@@ -134,7 +122,6 @@ class BlogWebsite
             }
         }, { root: document.querySelector('#blog-content'), rootMargin: '0px 0px -60% 0px', threshold: 0.1 })
 
-        // Observe headings in the rendered blog content
         const container = document.getElementById('blog-content')
         const headings = container.querySelectorAll('h1[id], h2[id], h3[id]')
         headings.forEach(h => observer.observe(h))

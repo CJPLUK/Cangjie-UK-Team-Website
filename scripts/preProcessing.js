@@ -32,12 +32,13 @@ const highlighter = await getHighlighter(
     ]
 });
 
-async function convertMdFile(mdFilePath, outputDir) 
+async function convertMdFile(mdFilePath, outputDir)
 {
     const mdContent = fs.readFileSync(mdFilePath, 'utf-8');
+    const name = path.basename(mdFilePath, '.md');
 
     const processed = await remark()
-    .use(remarkGfm) // converts ``` fenced code to code nodes
+    .use(remarkGfm)
     .use(() => (tree) => {
         visit(tree, 'code', (node) => {
         console.log('found code block:', node.lang);
@@ -52,27 +53,49 @@ async function convertMdFile(mdFilePath, outputDir)
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(mdContent);
 
-    const htmlFileName = path.basename(mdFilePath, '.md') + '.html';
-    fs.writeFileSync(path.join(outputDir, htmlFileName), processed.toString());
+    const bodyHtml = processed.toString();
+    const htmlFileName = name + '.html';
+    fs.writeFileSync(path.join(outputDir, htmlFileName), bodyHtml);
 }
 
 const blogsDir = path.resolve('./blogs');
 const outputDir = path.resolve('./blogsHTML');
 if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
-async function processAllBlogs() 
+async function processAllBlogs()
 {
     const files = fs.readdirSync(blogsDir).filter(f => f.endsWith('.md'));
-    for (const file of files) 
+    for (const file of files)
     {
-        try 
+        try
         {
-            await convertMdFile(path.join(blogsDir, file), outputDir, highlighter);
-        } catch (err) 
+            await convertMdFile(path.join(blogsDir, file), outputDir);
+        } catch (err)
         {
             console.error(`Error processing ${file}:`, err);
         }
     }
 }
 
+const newsDir = path.resolve('./news');
+const newsOutputDir = path.resolve('./newsHTML');
+if (!fs.existsSync(newsOutputDir)) fs.mkdirSync(newsOutputDir);
+
+async function processAllNews()
+{
+    if (!fs.existsSync(newsDir)) return;
+    const files = fs.readdirSync(newsDir).filter(f => f.endsWith('.md'));
+    for (const file of files)
+    {
+        try
+        {
+            await convertMdFile(path.join(newsDir, file), newsOutputDir);
+        } catch (err)
+        {
+            console.error(`Error processing news ${file}:`, err);
+        }
+    }
+}
+
 await processAllBlogs();
+await processAllNews();

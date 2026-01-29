@@ -19,87 +19,144 @@
 <body>
     <header class="site-header">
         <div class="site-header-inner">
-            <div class="brand">Cangjie UK <span class="brand-mark"><img class="brand-logo base" src="./assets/cangjie-logo.png" alt="Cangjie Logo" loading="lazy"><img class="brand-logo filtered" src="./assets/cangjie-logo.png" alt="" aria-hidden="true" loading="lazy"></span></div>
+            <a href="index.html" class="brand brand-link">
+                Cangjie UK
+                <span class="brand-mark">
+                    <img class="brand-logo" src="./assets/cangjie-logo.png" alt="Cangjie Logo" loading="lazy">
+                </span>
+            </a>
             <nav class="site-nav" aria-label="Primary">
                 <a href="#learn" class="nav-link">Learn</a>
-                <a href="#projects" class="nav-link">Projects</a>
-                <a href="#about" class="nav-link">About</a>
+                <a href="#projects" class="nav-link">Blogs</a>
+                <a href="about.html" class="nav-link">About</a>
             </nav>
         </div>
     </header>
     <div class="container">
         <header class="hero-section">
             <h1 class="main-title">Cangjie UK Team</h1>
-            <p class="subtitle" aria-label="Site tagline">Unlock a new application programming experience with Cangjie — high performance, strong safety.</p>
+            <p class="subtitle" aria-label="Site tagline">
+                Unlock a new application programming experience with Cangjie — high performance, strong safety.
+            </p>
         </header>
 
         <main class="content">
-            <!-- Learning Section -->
-            <section class="learning-section" id="learn">
-                <div class="learning-card">
-                    <h2>Learn Cangjie</h2>
-                    <p>Discover the fundamentals and advanced concepts of the Cangjie programming language.</p>
-                    <a href="https://aliftrs.github.io/cangjietutorial.io/" class="card-link" aria-label="Start the Cangjie tutorial">Start Tutorial</a>
-                </div>
-                
-                <div class="learning-card">
-                    <h2>Cangjie in Practice</h2>
-                    <p>Explore real-world applications and practical examples using Cangjie.</p>
-                    <a href="https://cangjie-lang.cn/en/playground" class="card-link" aria-label="Open Cangjie Playground">Open Playground</a>
-                </div>
+            <!-- Feature Rail -->
+            <section class="feature-rail" aria-label="Key Cangjie features">
+                <!-- Primary learn button: jump to original Learn Cangjie tutorial -->
+                <a class="feature-chip feature-chip-primary" href="https://aliftrs.github.io/cangjietutorial.io/" target="_blank" rel="noopener noreferrer">
+                    <span class="feature-code">CJ</span>
+                    <span class="feature-text">
+                        <span class="feature-label">Learn Cangjie</span>
+                        <span class="feature-subtitle">Start tutorial</span>
+                    </span>
+                </a>
+
+                <!-- Placeholder buttons (no navigation for now) -->
+                <button class="feature-chip" type="button">
+                    <span class="feature-code">EH</span>
+                    <span class="feature-label">Effect Handler</span>
+                </button>
+                <button class="feature-chip" type="button">
+                    <span class="feature-code">ACT</span>
+                    <span class="feature-label">Actor</span>
+                </button>
             </section>
 
-            <!-- Projects Section -->
-            <section class="projects-section" id="projects">
-                <div class="section-header">
-                    <h2>Open Source Projects</h2>
-                </div>
-                <div class="projects-grid" id="projects-container">
-                    <!-- Projects will be loaded dynamically -->
-                </div>
-                <!-- Added show more button container -->
-                <div class="show-more-container" id="show-more-container" style="display: none;">
-                    <button class="show-more-btn" id="show-more-btn" onclick="toggleShowMore()">
-                        Show More
-                    </button>
-                </div>
-            </section>
+            <div class="main-layout">
+                <!-- Blog / Projects Column -->
+                <section class="projects-section" id="projects">
+                    <div class="section-header">
+                        <h2>Blogs</h2>
+                    </div>
+                    <div class="projects-grid" id="projects-container">
+                        <!-- Blog cards will be loaded dynamically -->
+                    </div>
+                    <div class="show-more-container" id="show-more-container" style="display: none;">
+                        <button class="show-more-btn" id="show-more-btn" onclick="toggleShowMore()">
+                            Show More
+                        </button>
+                    </div>
+                </section>
 
-            <!-- Social Section -->
-            <section class="social-section" id="about">
-                <div class="section-header">
-                    <h2>Follow Us</h2>
-                </div>
-                <div class="social-grid" role="navigation" aria-label="Official links">
-                    <a class="social-card" href="https://cangjie-lang.cn/en" target="_blank" rel="noopener noreferrer">
-                        <div class="qr-placeholder">
-                            <img src="./QRCodes/CangjieOfficialWesbite.png" alt="Cangjie official website QR code" loading="lazy">
+                <!-- Right-hand Sidebar -->
+                <aside class="sidebar-column" aria-label="Sidebar">
+                    <!-- News -->
+                    <section class="sidebar-card news-card">
+                        <h3>News</h3>
+                        <div id="news-container" class="news-list" aria-label="News">
+                            <!-- Filled from newsInformation.json -->
                         </div>
-                        <p>Cangjie Official Website</p>
+                    </section>
+
+                    <!-- Subscribe -->
+                    <section class="sidebar-card subscribe-card">
+                        <h3>Subscribe</h3>
+                        <p>Get new Cangjie posts delivered occasionally</p>
+                        <form class="subscribe-form" action="https://example.com/subscribe" method="post">
+                            <label class="sr-only" for="subscribe-email">Email address</label>
+                            <input id="subscribe-email" name="email" type="email" placeholder="Email Address" required>
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </section>
+
+                    <!-- Tag-based highlights -->
+                    <section class="sidebar-card tag-card">
+                        <h3>Tag</h3>
+                        <div id="tag-chips" class="tag-chips" aria-label="Blog tags">
+                            <!-- Tags will be populated from project data -->
+                        </div>
+                    </section>
+
+                    <!-- Featured tech talk -->
+                    <a class="sidebar-card tech-talk-card" href="https://www.youtube.com/watch?v=qCasifi8JHw" target="_blank" rel="noopener noreferrer">
+                        <div class="tech-talk-thumb">
+                            <img src="https://img.youtube.com/vi/qCasifi8JHw/hqdefault.jpg" alt="YouTube cover for featured tech talk" loading="lazy">
+                            <div class="tech-talk-badge">Tech Talk</div>
+                        </div>
+                        <div class="tech-talk-meta">
+                            <h3>Featured tech talk</h3>
+                            <p class="tech-talk-title">Cangjie language tech talk (YouTube)</p> 
+                        </div>
                     </a>
 
-                    <a class="social-card" href="https://x.com/Cangjie_Lang" target="_blank" rel="noopener noreferrer">
-                        <div class="qr-placeholder">
-                            <img src="./QRCodes/xAccountCangjie.png" alt="Cangjie X (Twitter) account QR code" loading="lazy">
-                        </div>
-                        <p>X (Twitter)</p>
-                    </a>
+                    <!-- Partners -->
+                    <section class="sidebar-card partners-card">
+                        <h3>Partners</h3>
+                        <ul class="partners-list">
+                            <li><a href="https://www.eclipse.org/" target="_blank" rel="noopener noreferrer">Eclipse Foundation</a></li>
+                            <li><a href="https://www.openharmony.cn/homepage/" target="_blank" rel="noopener noreferrer">OpenHarmony</a></li>
+                        </ul>
+                    </section>
 
-                    <a class="social-card" href="https://www.linkedin.com/company/cangjie/" target="_blank" rel="noopener noreferrer">
-                        <div class="qr-placeholder">
-                            <img src="./QRCodes/LinkedinCangjie.png" alt="Cangjie LinkedIn page QR code" loading="lazy">
-                        </div>
-                        <p>LinkedIn</p>
-                    </a>
-
-                    <a class="social-card" href="https://gitcode.com/Cangjie/cangjie_docs" target="_blank" rel="noopener noreferrer">
-                        <div class="qr-placeholder">
-                            <img src="./QRCodes/GitCodeCanjie.png" alt="Cangjie GitCode repository QR code" loading="lazy">
-                        </div>
-                        <p>GitCode</p>
-                    </a>
-                </div>
-            </section>
+                    <!-- Official Channels (icons from assets) -->
+                    <section class="sidebar-card follow-us-card" id="about">
+                        <h3>Official Channels</h3>
+                        <nav class="social-links" aria-label="Official links">
+                            <a class="social-link" href="https://cangjie-lang.cn/en" target="_blank" rel="noopener noreferrer">
+                                <img class="social-icon-img" src="./assets/cangjie-icon.png" alt="">
+                                <span class="social-label">Cangjie Official Website</span>
+                            </a>
+                            <a class="social-link" href="https://www.youtube.com/@Cangjie_Lang" target="_blank" rel="noopener noreferrer">
+                                <img class="social-icon-img" src="./assets/youtube.png" alt="">
+                                <span class="social-label">YouTube</span>
+                            </a>
+                            <a class="social-link" href="https://x.com/Cangjie_Lang" target="_blank" rel="noopener noreferrer">
+                                <img class="social-icon-img" src="./assets/twitter.png" alt="">
+                                <span class="social-label">X (Twitter)</span>
+                            </a>
+                            <a class="social-link" href="https://www.linkedin.com/company/cangjie/" target="_blank" rel="noopener noreferrer">
+                                <img class="social-icon-img" src="./assets/linkedin.png" alt="">
+                                <span class="social-label">LinkedIn</span>
+                            </a>
+                            <a class="social-link" href="https://gitcode.com/Cangjie/cangjie_docs" target="_blank" rel="noopener noreferrer">
+                                <img class="social-icon-img" src="./assets/gitcode.png" alt="">
+                                <span class="social-label">GitCode</span>
+                            </a>
+                        </nav>
+                    </section>
+                </aside>
+            </div>
         </main>
     </div>
 
