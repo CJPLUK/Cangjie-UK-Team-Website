@@ -14,11 +14,22 @@ class BlogWebsite
 
     async init()
     {
-        this.getBlogId() ;
-        await this.loadBlogInformation() ;
-        await this.loadTableOfContents() ;
-        await this.loadBlog() ;
-        this.setUpEventListeners() ;
+        const blogContent = document.getElementById("blog-content") ;
+        const showError = (msg) => { if (blogContent) blogContent.innerHTML = `<p class="loading" style="color:#c00">${msg}</p>` ; } ;
+        try {
+            this.getBlogId() ;
+            await this.loadBlogInformation() ;
+            await this.loadBlog() ;
+            await this.loadTableOfContents() ;
+            this.setUpEventListeners() ;
+        } catch (e) {
+            showError(`Failed to load blog: ${e && e.message ? e.message : e}`) ;
+        }
+    }
+
+    baseUrl(path)
+    {
+        return new URL(path, import.meta.url).href ;
     }
 
     getBlogId()
@@ -30,7 +41,8 @@ class BlogWebsite
 
     async getBlogInformation()
     {
-        const response = await fetch("../data/blogInformation.json") ;
+        const response = await fetch(this.baseUrl("../data/blogInformation.json")) ;
+        if (!response.ok) throw new Error(`blogInformation.json: ${response.status}`) ;
 
         const blogInformationList = await response.json() ;
         if(blogInformationList.length <= this.blogId) throw new Error("Incorrect blog Id.") ;
@@ -78,16 +90,17 @@ class BlogWebsite
     async loadBlog()
     {
         const blogContent = document.getElementById("blog-content") ;
-        const response = await fetch(`blogsHTML/${this.blogName}.html`) ;
-        if (!response.ok) throw new Error(`Blog ${this.blogName} not found`) ;
+        const url = `/blogsHTML/${this.blogName}.html` ;
+        const response = await fetch(url) ;
+        if (!response.ok) throw new Error(`Blog ${this.blogName}.html: ${response.status}`) ;
         const text = await response.text() ;
         blogContent.innerHTML = text ;
     }
 
     async loadTableOfContents()
     {
-        const response = await fetch(`../blogs/${this.blogName}.md`) ;
-        if (!response.ok) throw new Error(`Blog ${this.blogName} not found`) ;
+        const response = await fetch(this.baseUrl(`../blogs/${this.blogName}.md`)) ;
+        if (!response.ok) return ;
         const markdownContent = await response.text() ;
 
         const tocElement = document.getElementById("table-of-contents") ;

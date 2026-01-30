@@ -5,11 +5,15 @@ function formatNewsDate(dmy) {
   return new Intl.DateTimeFormat(undefined, { year: "numeric", month: "long", day: "numeric" }).format(date);
 }
 
+function baseUrl(path) {
+  return new URL(path, document.baseURI || window.location.href).href;
+}
+
 (async function () {
   const params = new URLSearchParams(window.location.search);
   const id = parseInt(params.get("id"), 10) || 0;
 
-  const listRes = await fetch("data/newsInformation.json");
+  const listRes = await fetch(baseUrl("../data/newsInformation.json"));
   if (!listRes.ok) {
     document.getElementById("news-content").innerHTML = "<p class=\"error-message\">News not found.</p>";
     return;
@@ -32,7 +36,7 @@ function formatNewsDate(dmy) {
   }
 
   try {
-    const contentRes = await fetch(`../newsHTML/${item.name}.html`);
+    const contentRes = await fetch(baseUrl(`../newsHTML/${item.name}.html`));
     if (!contentRes.ok) throw new Error("Content not found");
     let html = await contentRes.text();
     const div = document.createElement("div");
