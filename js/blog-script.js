@@ -27,9 +27,18 @@ class BlogWebsite
         }
     }
 
+    getSiteBase()
+    {
+        const pathname = window.location.pathname || "" ;
+        const i = pathname.indexOf("/pages/") ;
+        if (i !== -1) return pathname.substring(0, i) + "/" ;
+        return "/" ;
+    }
+
     baseUrl(path)
     {
-        return new URL(path, import.meta.url).href ;
+        const base = this.getSiteBase() ;
+        return new URL(path.replace(/^\//, ""), window.location.origin + base).href ;
     }
 
     getBlogId()
@@ -41,7 +50,7 @@ class BlogWebsite
 
     async getBlogInformation()
     {
-        const response = await fetch(this.baseUrl("../data/blogInformation.json")) ;
+        const response = await fetch(this.baseUrl("data/blogInformation.json")) ;
         if (!response.ok) throw new Error(`blogInformation.json: ${response.status}`) ;
 
         const blogInformationList = await response.json() ;
@@ -90,7 +99,7 @@ class BlogWebsite
     async loadBlog()
     {
         const blogContent = document.getElementById("blog-content") ;
-        const url = `/blogsHTML/${this.blogName}.html` ;
+        const url = this.baseUrl(`blogsHTML/${this.blogName}.html`) ;
         const response = await fetch(url) ;
         if (!response.ok) throw new Error(`Blog ${this.blogName}.html: ${response.status}`) ;
         const text = await response.text() ;
@@ -99,7 +108,7 @@ class BlogWebsite
 
     async loadTableOfContents()
     {
-        const response = await fetch(this.baseUrl(`../blogs/${this.blogName}.md`)) ;
+        const response = await fetch(this.baseUrl(`blogs/${this.blogName}.md`)) ;
         if (!response.ok) return ;
         const markdownContent = await response.text() ;
 
