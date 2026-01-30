@@ -480,6 +480,12 @@ a.brand-link:hover { color: #20b2aa; }
   font-size: 0.9rem;
 }
 
+.subscribe-form input[type="email"]:disabled {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
 .subscribe-form button {
   border-radius: 6px;
   border: none;
