@@ -58,8 +58,8 @@ class BlogWebsite
         const blogInformation = blogInformationList[this.blogId] ;
 
         this.blogName = blogInformation.name ;
-        this.blogRepoLink = blogInformation.repoLink ;
-        this.authors = blogInformation.authors ;
+        this.blogRepoLink = (blogInformation.repoLink && String(blogInformation.repoLink).trim()) || "" ;
+        this.authors = blogInformation.authors || [] ;
     }
 
     loadBlogTitle()
@@ -71,8 +71,17 @@ class BlogWebsite
 
     loadRepoLink()
     {
+        const container = document.getElementById("repo-link-container") ;
+        if (!container) return ;
+        if (!this.blogRepoLink) {
+            container.style.display = "none" ;
+            container.setAttribute("hidden", "hidden") ;
+            return ;
+        }
+        container.style.display = "" ;
+        container.removeAttribute("hidden") ;
         const repoLinkElement = document.getElementById("repo-link") ;
-        repoLinkElement.href = this.blogRepoLink ;
+        if (repoLinkElement) repoLinkElement.href = this.blogRepoLink ;
     }
 
     loadAuthorsList()

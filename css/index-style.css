@@ -174,6 +174,7 @@ a.brand-link:hover { color: #20b2aa; }
 
 .card-link:focus-visible,
 .show-more-btn:focus-visible,
+.project-card:focus-visible,
 .project-link:focus-visible,
 .social-card:focus-visible {
   outline: 3px solid #0f766e;
@@ -216,12 +217,16 @@ a.brand-link:hover { color: #20b2aa; }
 }
 
 .project-card {
+  display: block;
   background: white;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.2s ease;
   border-left: 4px solid #20b2aa;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .project-card:hover {
@@ -232,7 +237,13 @@ a.brand-link:hover { color: #20b2aa; }
   font-size: 1.4rem;
   font-weight: 600;
   color: #2c3e50;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-date {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 0.75rem;
 }
 
 .project-card p {
@@ -262,22 +273,6 @@ a.brand-link:hover { color: #20b2aa; }
   font-weight: 600;
 }
 
-.project-date {
-  display: none;
-}
-
-.project-link {
-  display: inline-block;
-  color: #20b2aa;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-}
-
-.project-link:hover {
-  color: #17a2b8;
-  text-decoration: underline;
-}
 
 .show-more-container {
   text-align: center;

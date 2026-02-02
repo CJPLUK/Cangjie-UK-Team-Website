@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { remark } from 'remark';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
@@ -8,6 +9,9 @@ import rehypeStringify from 'rehype-stringify';
 import { getHighlighter } from 'shiki';
 import { visit } from 'unist-util-visit';
 import rehypeSlug from 'rehype-slug';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const cangjieGrammar = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, '..', 'data', 'CangjieHighlights.json'), 'utf-8')

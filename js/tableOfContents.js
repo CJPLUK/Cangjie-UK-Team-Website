@@ -2,18 +2,7 @@ export class Utils
 {
     static copy(data)
     {
-        for(const item of data)
-        {
-            if(item.name == projectOfTheCentury)
-            {
-                const today = new Date();
-                const day = String(today.getDate()).padStart(2, '0');
-                const month = String(today.getMonth() + 1).padStart(2, '0');
-                const year = today.getFullYear();
-                item.date= `${day}/${month}/${year}`;
-            }
-        }
-        return [...data] ;
+        return [...data]
     }
 
     static createAnchorId(text)
@@ -65,13 +54,18 @@ export class Utils
 
     static parseDate(dateString)
     {
-        const [day, month, year] = dateString.split("/")
-        return new Date(year, month - 1, day)
+        if (!dateString || typeof dateString !== "string") return new Date(0)
+        const parts = dateString.trim().split("/")
+        if (parts.length !== 3) return new Date(0)
+        const [day, month, year] = parts
+        const y = Number(year), m = Number(month) - 1, d = Number(day)
+        if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) return new Date(0)
+        return new Date(y, m, d)
     }
 
     static copyAndSort(dataRaw)
     {
-        let data = Utils.copy(dataRaw) ;
+        let data = Utils.copy(dataRaw)
         data.sort((a, b) =>
         {
             const dateA = Utils.parseDate(a.date)
@@ -83,4 +77,3 @@ export class Utils
 }
 
 
-const projectOfTheCentury = "MagicExplorer" ;

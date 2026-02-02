@@ -9,10 +9,14 @@ const INITIAL_DISPLAY_COUNT = 6
 
 function formatDateForDisplay(dmy)
 {
-    // Expecting DD/MM/YYYY
-    const [d, m, y] = dmy.split("/")
-    const date = new Date(Number(y), Number(m) - 1, Number(d))
-    const fmt = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: '2-digit' })
+    if (!dmy || typeof dmy !== "string") return ""
+    const parts = dmy.trim().split("/")
+    if (parts.length !== 3) return ""
+    const day = Number(parts[0]), month = Number(parts[1]), year = Number(parts[2])
+    if (Number.isNaN(year) || Number.isNaN(month) || Number.isNaN(day)) return ""
+    const date = new Date(year, month - 1, day)
+    if (Number.isNaN(date.getTime())) return ""
+    const fmt = new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "2-digit" })
     return fmt.format(date)
 }
 
@@ -45,17 +49,20 @@ async function loadProjects()
 
 function displaySingleProject(project, projectsContainer)
 {
-    const projectCard = document.createElement("div")
+    const blogId = allProjectsRaw.indexOf(project)
+    const projectCard = document.createElement("a")
     projectCard.className = "project-card"
+    projectCard.href = `pages/blogTemplate.html?id=${blogId}`
 
     const tags = Array.isArray(project.tags) ? project.tags : []
     const description = project.description || ""
+    const dateStr = project.date ? formatDateForDisplay(project.date) : ""
 
     projectCard.innerHTML = `
     <h3>${project.name}</h3>
+    ${dateStr ? `<p class="project-date">${dateStr}</p>` : ""}
     ${description ? `<p class="project-summary">${description}</p>` : ""}
     ${tags.length ? `<div class="project-tags">${tags.map(t => `<span class="tag">${t}</span>`).join(" ")}</div>` : ""}
-    <a href="pages/blogTemplate.html?id=${allProjectsRaw.indexOf(project)}" class="project-link">View Blog →</a>
     `
     projectsContainer.appendChild(projectCard)
 }
