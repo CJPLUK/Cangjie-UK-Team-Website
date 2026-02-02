@@ -127,10 +127,4 @@ document.addEventListener("DOMContentLoaded", () => {
   loadNews()
 })
 
-function showSubscribeNotice()
-{
-    alert("Subscribe feature is not yet available. Stay tuned!")
-}
-
 window.toggleShowMore = toggleShowMore
-window.showSubscribeNotice = showSubscribeNotice
