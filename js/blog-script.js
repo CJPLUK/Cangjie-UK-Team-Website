@@ -7,6 +7,7 @@ class BlogWebsite
     {
         this.blogId = 0 ;
         this.blogName = "Example" ;
+        this.blogSlug = "Example" ;
         this.blogRepoLink = "https://www.example.com/" ;
         this.authors = [] ;
         this.init() ;
@@ -58,6 +59,7 @@ class BlogWebsite
         const blogInformation = blogInformationList[this.blogId] ;
 
         this.blogName = blogInformation.name ;
+        this.blogSlug = (blogInformation.slug && String(blogInformation.slug).trim()) || blogInformation.name ;
         this.blogRepoLink = (blogInformation.repoLink && String(blogInformation.repoLink).trim()) || "" ;
         this.authors = blogInformation.authors || [] ;
     }
@@ -108,16 +110,16 @@ class BlogWebsite
     async loadBlog()
     {
         const blogContent = document.getElementById("blog-content") ;
-        const url = this.baseUrl(`blogsHTML/${this.blogName}.html`) ;
+        const url = this.baseUrl(`blogsHTML/${this.blogSlug}.html`) ;
         const response = await fetch(url) ;
-        if (!response.ok) throw new Error(`Blog ${this.blogName}.html: ${response.status}`) ;
+        if (!response.ok) throw new Error(`Blog ${this.blogSlug}.html: ${response.status}`) ;
         const text = await response.text() ;
         blogContent.innerHTML = text ;
     }
 
     async loadTableOfContents()
     {
-        const response = await fetch(this.baseUrl(`blogs/${this.blogName}.md`)) ;
+        const response = await fetch(this.baseUrl(`blogs/${this.blogSlug}.md`)) ;
         if (!response.ok) return ;
         const markdownContent = await response.text() ;
 

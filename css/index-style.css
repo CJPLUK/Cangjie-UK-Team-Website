@@ -212,7 +212,7 @@ a.brand-link:hover { color: #20b2aa; }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
