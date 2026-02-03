@@ -50,7 +50,7 @@ You need to add another entry in **data/blogInformation.json**, and add a *.md* 
 
 In the JSON file you should include:
 - authors of the blog
-- gitcode repo link
+- gitcode repo link (can be empty)
 - name of the blog
 - date of creation
 
