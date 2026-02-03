@@ -1,6 +1,6 @@
 # Cangjie UK Team website
 
-This website was create to represent open source Cangjie projects of Huawei research center.
+We are a team based in the Edinburgh focused on the Cangjie programming language — sharing tutorials, writing blogs, and building practical resources for developers.
 
 ## Run the site locally (Python)
 
