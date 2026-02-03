@@ -5,8 +5,8 @@ Here in the UK team for Cangjie, one of the big themes underpinning our work is 
 ## Where they come from?
 
 *Effect handlers* have emerged as a powerful, modular abstraction for managing side effects in mostly functional programming languages.
-They originate from the algebraic theory of effects proposed by Gordon Plotkin and John Power in the early 2000s as a more convenient way to deal with
-side effects in functional code without resorting to monad transforms.
+They originate from the theory of algebraic effects developed by Gordon Plotkin and John Power in the early 2000s as a more convenient way to deal with
+side effects in functional code without resorting to monad transformers.
 
 ## Effect Handlers in Cangjie
 
