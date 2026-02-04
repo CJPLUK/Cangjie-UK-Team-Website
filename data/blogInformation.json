@@ -20,11 +20,22 @@
     "repoLink": "",
     "authors": ["Dan Ghica"],
     "date": "31/10/2025",
-    "description": "An exploration of dynamic binding in programming languages, highlighting its power, complexity, and impact on language design, performance, and reasoning..",
+    "description": "An exploration of dynamic binding in programming languages, highlighting its power, complexity, and impact on language design, performance, and reasoning",
     "tags": ["Automation", 
       "Runtime Systems", 
       "Language Semantics", 
       "Programming Models",
+      "Cangjie"]
+  },
+  {
+    "name": "Building Your First Cangjie Application on OpenHarmony",
+    "repoLink": "",
+    "authors": ["Jiashun Lu"],
+    "date": "04/02/2026",
+    "description": "A Step-by-Step Guide to Setting Up the Environment from Scratch and Completing a Cangjie Demo Project on OpenHarmony",
+    "tags": ["Tutorial", 
+      "OpenHarmony OS", 
+      "Oniro OS", 
       "Cangjie"]
   }
 ]
