@@ -51,7 +51,8 @@ class BlogWebsite
 
     async getBlogInformation()
     {
-        const response = await fetch(this.baseUrl("data/blogInformation.json")) ;
+        const jsonUrl = new URL("../data/blogInformation.json", window.location.href).href ;
+        const response = await fetch(jsonUrl) ;
         if (!response.ok) throw new Error(`blogInformation.json: ${response.status}`) ;
 
         const blogInformationList = await response.json() ;
@@ -66,9 +67,8 @@ class BlogWebsite
 
     loadBlogTitle()
     {
-        const titleElement = document.getElementById("blog-name") ;
-        const temp = this.blogName.replace(/_/g," ") ;
-        titleElement.textContent = `${temp}` ;
+        const displayName = this.blogName.replace(/_/g, " ") ;
+        document.title = `${displayName} — Cangjie UK Team` ;
     }
 
     loadRepoLink()
@@ -83,7 +83,10 @@ class BlogWebsite
         container.style.display = "" ;
         container.removeAttribute("hidden") ;
         const repoLinkElement = document.getElementById("repo-link") ;
-        if (repoLinkElement) repoLinkElement.href = this.blogRepoLink ;
+        if (repoLinkElement) {
+            const href = this.blogRepoLink ;
+            repoLinkElement.href = /^https?:\/\//i.test(href) ? href : this.baseUrl(href.replace(/^\//, "")) ;
+        }
     }
 
     loadAuthorsList()
@@ -110,7 +113,7 @@ class BlogWebsite
     async loadBlog()
     {
         const blogContent = document.getElementById("blog-content") ;
-        const url = this.baseUrl(`blogsHTML/${this.blogSlug}.html`) ;
+        const url = new URL(`../blogsHTML/${this.blogSlug}.html`, window.location.href).href ;
         const response = await fetch(url) ;
         if (!response.ok) throw new Error(`Blog ${this.blogSlug}.html: ${response.status}`) ;
         const text = await response.text() ;
@@ -172,23 +175,26 @@ class BlogWebsite
         this._lightbox.classList.remove("is-open") ;
     }
 
-    async loadTableOfContents()
+    loadTableOfContents()
     {
-        const response = await fetch(this.baseUrl(`blogs/${this.blogSlug}.md`)) ;
-        if (!response.ok) return ;
-        const markdownContent = await response.text() ;
-
+        const container = document.getElementById("blog-content") ;
         const tocElement = document.getElementById("table-of-contents") ;
-        const headers = Utils.generateHeaders(markdownContent) ;
+        const headingNodes = container.querySelectorAll("h1[id], h2[id], h3[id]") ;
+        const headers = Array.from(headingNodes).map((el) => ({
+            level: el.tagName === "H1" ? 1 : el.tagName === "H2" ? 2 : 3,
+            text: el.textContent.trim(),
+            id: el.id
+        })) ;
+
         if (headers.length === 0)
         {
-            tocElement.innerHTML = '<p class="no-toc">No sections found</p>';
-            return;
+            tocElement.innerHTML = "<p class=\"no-toc\">No sections found</p>" ;
+            return ;
         }
         const tocHTML = Utils.buildNestedListTOC(headers) ;
-        tocElement.innerHTML = `<nav class="toc">${tocHTML}</nav>`;
+        tocElement.innerHTML = `<nav class="toc">${tocHTML}</nav>` ;
 
-        this.enableScrollSpy(headers)
+        this.enableScrollSpy(headers) ;
     }
 
     enableScrollSpy(headers)
@@ -198,21 +204,26 @@ class BlogWebsite
             const link = document.querySelector(`.toc a[href="#${h.id}"]`)
             if (link) linkById.set(h.id, link)
         }
-        const observer = new IntersectionObserver((entries) => {
-            for (const e of entries) {
-                if (e.isIntersecting) {
-                    const id = e.target.getAttribute('id')
-                    const link = linkById.get(id)
-                    if (!link) continue
-                    document.querySelectorAll('.toc-link.active').forEach(el => el.classList.remove('active'))
-                    link.classList.add('active')
-                }
-            }
-        }, { root: document.querySelector('#blog-content'), rootMargin: '0px 0px -60% 0px', threshold: 0.1 })
-
         const container = document.getElementById('blog-content')
-        const headings = container.querySelectorAll('h1[id], h2[id], h3[id]')
-        headings.forEach(h => observer.observe(h))
+        const headings = Array.from(container.querySelectorAll('h1[id], h2[id], h3[id]'))
+        const triggerOffset = 80
+
+        const updateActive = () => {
+            const scrollTop = container.scrollTop
+            const viewTop = scrollTop + triggerOffset
+            let activeId = null
+            for (const h of headings) {
+                if (h.offsetTop <= viewTop) activeId = h.id
+            }
+            document.querySelectorAll('.toc-link.active').forEach(el => el.classList.remove('active'))
+            if (activeId) {
+                const link = linkById.get(activeId)
+                if (link) link.classList.add('active')
+            }
+        }
+
+        container.addEventListener('scroll', updateActive, { passive: true })
+        updateActive()
     }
 }
 

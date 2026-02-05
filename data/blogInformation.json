@@ -6,7 +6,7 @@
       "Maksymilian Sieklinski",
       "Isaac Lee"
     ],
-    "date": "20/08/2020",
+    "date": "20/08/2025",
     "description": "An automated browser agent system built with the Cangjie Magic framework, integrating Playwright via MCP for real-world web automation.",
     "tags": [
       "Automation",
@@ -18,13 +18,47 @@
   {
     "name": "The challenge of dynamic binding",
     "repoLink": "",
-    "authors": ["Dan Ghica"],
+    "authors": [
+      "Dan Ghica"
+    ],
     "date": "31/10/2025",
-    "description": "An exploration of dynamic binding in programming languages, highlighting its power, complexity, and impact on language design, performance, and reasoning..",
-    "tags": ["Automation", 
-      "Runtime Systems", 
-      "Language Semantics", 
+    "description": "An exploration of dynamic binding in programming languages, highlighting its power, complexity, and impact on language design, performance, and reasoning",
+    "tags": [
+      "Automation",
+      "Runtime Systems",
+      "Language Semantics",
       "Programming Models",
-      "Cangjie"]
+      "Cangjie"
+    ]
+  },
+  {
+    "name": "Building Your First Cangjie Application on OpenHarmony",
+    "repoLink": "",
+    "authors": [
+      "Jiashun Lu",
+      "Xiang Gao"
+    ],
+    "date": "04/02/2026",
+    "description": "A Step-by-Step Guide to Setting Up the Environment from Scratch and Completing a Cangjie Demo Project on OpenHarmony",
+    "tags": [
+      "Tutorial",
+      "OpenHarmony OS",
+      "Oniro OS",
+      "Cangjie"
+    ]
+  },
+  {
+    "name": "Cangjie AI for Cursor, An AI-Aware Extension for the Cangjie Language",
+    "repoLink": "https://gitcode.com/SeanXDO/CangjieAI4Cursor",
+    "authors": [
+      "SeanXDO"
+    ],
+    "date": "05/02/2026",
+    "description": "A Cursor extension that automatically injects Cangjie-specific context, toolchain conventions, and Context7 MCP documentation into AI prompts to improve code understanding and generation",
+    "tags": [
+      "Cursor",
+      "Extensions",
+      "Cangjie"
+    ]
   }
 ]
