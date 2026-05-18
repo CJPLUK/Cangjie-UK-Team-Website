@@ -29,12 +29,15 @@ const {
           <slot />
         </article>
       </div>
-      <div class="md-content-links">
-        <div class="blog-info">
+      <aside class="sidebar-column" aria-label="Sidebar">
+        <slot name="sidebar" />
+        <div class="sidebar-card">
+          <div class="blog-info">
           <h3>Table of Contents</h3>
           <TableOfContents headings={headings} contentSelector="#blog-content" />
+          </div>
         </div>
-      </div>
+      </aside>
     </div>
   </main>
 </BaseLayout>

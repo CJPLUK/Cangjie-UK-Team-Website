@@ -74,7 +74,8 @@ body {
     grid-column: 1 / -1;
 }
 
-main.blog-main .blog-main-inner > .md-content-links {
+main.blog-main .blog-main-inner > .md-content-links,
+main.blog-main aside {
     position: sticky;
     top: 5rem;
 }
@@ -84,7 +85,8 @@ main.blog-main .blog-main-inner > .md-content-links {
         grid-template-columns: 1fr;
     }
 
-    main.blog-main .blog-main-inner > .md-content-links {
+    main.blog-main .blog-main-inner > .md-content-links,
+    main.blog-main aside {
         position: static;
     }
 }
@@ -527,7 +529,8 @@ main.blog-main .blog-main-inner > .md-content-links {
         padding-top: 1rem;
     }
 
-    main.blog-main .blog-main-inner > .md-content-links {
+    main.blog-main .blog-main-inner > .md-content-links,
+    main.blog-main aside {
         position: static;
     }
 
