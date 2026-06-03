@@ -56,6 +56,20 @@ const ogImage = new URL("/QRCodes/CangjieOfficialWesbite.png", siteUrl).toString
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
         />
+        <script is:inline>
+            (() => {
+                if (window.__navReferrerTrackerInstalled) return;
+                window.__navReferrerTrackerInstalled = true;
+                document.addEventListener("astro:before-preparation", (event) => {
+                    try {
+                        const fromUrl = event && event.from ? event.from.href : "";
+                        if (fromUrl) {
+                            sessionStorage.setItem("navPrevUrl", fromUrl);
+                        }
+                    } catch (e) {}
+                });
+            })();
+        </script>
     </head>
     <body>
         <SiteHeader />

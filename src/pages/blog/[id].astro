@@ -61,7 +61,13 @@ const formatDate = (dateStr: string) => {
 >
     <main class="blog-main">
         <div class="blog-main-inner">
-            <a href={withBase("/blog")} class="news-back-link blog-back-link"
+            <a
+                href={withBase("/blog")}
+                class="news-back-link blog-back-link"
+                data-blog-href={withBase("/blog")}
+                data-home-href={withBase("/")}
+                data-blog-label="← Back to Blog"
+                data-home-label="← Back to Home"
                 >← Back to Blog</a
             >
             <div class="md-window">
@@ -124,6 +130,51 @@ const formatDate = (dateStr: string) => {
 
     <script is:inline data-astro-rerun>
         (() => {
+            const updateBackLink = () => {
+                const link = document.querySelector(".blog-back-link");
+                if (!link) return;
+
+                const blogHref = link.getAttribute("data-blog-href") || "";
+                const homeHref = link.getAttribute("data-home-href") || "";
+                const blogLabel =
+                    link.getAttribute("data-blog-label") || "← Back to Blog";
+                const homeLabel =
+                    link.getAttribute("data-home-label") || "← Back to Home";
+
+                const normalize = (p) =>
+                    (p || "")
+                        .replace(/index\.html$/, "")
+                        .replace(/\/+$/, "") || "/";
+
+                let ref = "";
+                try {
+                    ref = sessionStorage.getItem("navPrevUrl") || "";
+                } catch (e) {}
+                if (!ref) ref = document.referrer;
+                if (!ref) return;
+
+                try {
+                    const refUrl = new URL(ref);
+                    if (refUrl.origin !== window.location.origin) return;
+
+                    const refPath = normalize(refUrl.pathname);
+                    const homePath = normalize(
+                        new URL(homeHref, window.location.origin).pathname,
+                    );
+                    const blogPath = normalize(
+                        new URL(blogHref, window.location.origin).pathname,
+                    );
+
+                    if (refPath === homePath) {
+                        link.setAttribute("href", homeHref);
+                        link.textContent = homeLabel;
+                    } else if (refPath === blogPath) {
+                        link.setAttribute("href", blogHref);
+                        link.textContent = blogLabel;
+                    }
+                } catch (e) {}
+            };
+
             const enhanceBlogVideoLinks = () => {
             const container = document.getElementById("blog-content");
             if (!container) return;
@@ -169,8 +220,12 @@ const formatDate = (dateStr: string) => {
             });
             };
 
+            updateBackLink();
             enhanceBlogVideoLinks();
-            document.addEventListener("astro:page-load", enhanceBlogVideoLinks);
+            document.addEventListener("astro:page-load", () => {
+                updateBackLink();
+                enhanceBlogVideoLinks();
+            });
         })();
     </script>
 </BaseLayout>
