@@ -6,7 +6,8 @@ authors:
   - "Cangjie UK Team"
 tags:
   - "Cangjie"
-  - "Talk"
+  - "Conference"
+  - "Community"
 descriptionImage: "./figures/tiobe-paul-jansen-edinburgh-talk.png"
 ---
 

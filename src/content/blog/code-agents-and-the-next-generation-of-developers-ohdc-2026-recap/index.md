@@ -5,6 +5,7 @@ date: "28/05/2026"
 authors:
   - "Cangjie UK Team"
 tags:
+  - "AI"
   - "Conference"
   - "Education"
   - "OpenHarmony"

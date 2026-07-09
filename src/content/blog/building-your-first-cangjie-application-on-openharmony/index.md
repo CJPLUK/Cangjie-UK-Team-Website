@@ -7,8 +7,8 @@ authors:
   - "Xiang Gao"
 tags:
   - "Tutorial"
-  - "OpenHarmony OS"
-  - "Oniro OS"
+  - "OpenHarmony"
+  - "Oniro"
 ---
 
 # Building Your First Cangjie Application on OpenHarmony

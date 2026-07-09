@@ -6,6 +6,7 @@ authors:
   - "Cangjie UK Team"
 tags:
   - "Cangjie"
+  - "Ecosystem"
 descriptionImage: "./figures/cangjie-1-1-0-release.png"
 ---
 
