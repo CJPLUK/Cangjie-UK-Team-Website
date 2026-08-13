@@ -5,6 +5,18 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
     const newsEntries: CollectionEntry<"news">[] = await getCollection("news");
+    const legacyNumericIds: Record<string, string> = {
+        "oniro-team-ocx-2026-recap": "0",
+        "gosim-paris-2026-cangjie-ace-model": "1",
+        "ocx-2026-talk-now-on-youtube": "2",
+        "prof-dan-r-ghica-to-speak-at-ocx-2026": "3",
+        "jcst-publication": "4",
+        "cangjie-workshop-42-harmonyos-roadmap-2026": "5",
+        "happy-chinese-new-year": "6",
+        "cangjie-workshop-41-effect-handlers-and-distributed-actor-framework": "7",
+        welcome: "8",
+        "cangjie-version-104-released": "9",
+    };
 
     const sortedEntries = newsEntries.sort(
         (a: CollectionEntry<"news">, b: CollectionEntry<"news">) => {
@@ -24,12 +36,25 @@ export async function getStaticPaths() {
         },
     );
 
-    return sortedEntries.map(
-        (entry: CollectionEntry<"news">, index: number) => ({
-            params: { id: String(index) },
-            props: { entry },
-        }),
-    );
+    return sortedEntries.flatMap((entry: CollectionEntry<"news">) => {
+        const paths = [
+            {
+                params: { id: entry.slug },
+                props: { entry },
+            },
+        ];
+        const legacyId = legacyNumericIds[entry.slug];
+
+        if (legacyId) {
+            paths.push({
+                // Preserve numeric URLs published before stable slugs were used.
+                params: { id: legacyId },
+                props: { entry },
+            });
+        }
+
+        return paths;
+    });
 }
 
 interface Props {
@@ -58,7 +83,14 @@ const formatDate = (dateStr: string) => {
 <BaseLayout title="News — The Cangjie Programming Language UK Team" isBlogPage={true}>
     <main class="blog-main news-page-main">
         <div class="blog-main-inner news-page-inner">
-            <a href={withBase("/")} class="news-back-link">← Back to Home</a>
+            <a
+                href={withBase("/news/")}
+                class="news-back-link"
+                data-news-back-link
+                data-news-href={withBase("/news/")}
+                data-home-href={withBase("/")}
+                >← Back to News</a
+            >
             <article class="news-article">
                 <header class="news-article-header">
                     <h1 class="news-article-title">{entry.data.title}</h1>
@@ -74,4 +106,49 @@ const formatDate = (dateStr: string) => {
             </article>
         </div>
     </main>
+
+    <script is:inline data-astro-rerun>
+        (() => {
+            const updateNewsBackLink = () => {
+                const link = document.querySelector("[data-news-back-link]");
+                if (!link) return;
+
+                const newsHref = link.getAttribute("data-news-href") || "";
+                const homeHref = link.getAttribute("data-home-href") || "";
+                let ref = "";
+
+                try {
+                    ref = sessionStorage.getItem("navPrevUrl") || "";
+                } catch (e) {}
+                if (!ref) ref = document.referrer;
+                if (!ref) return;
+
+                const normalize = (path) =>
+                    (path || "")
+                        .replace(/index\.html$/, "")
+                        .replace(/\/+$/, "") || "/";
+
+                try {
+                    const refUrl = new URL(ref);
+                    if (refUrl.origin !== window.location.origin) return;
+
+                    const refPath = normalize(refUrl.pathname);
+                    const homePath = normalize(
+                        new URL(homeHref, window.location.origin).pathname,
+                    );
+
+                    if (refPath === homePath) {
+                        link.setAttribute("href", homeHref);
+                        link.textContent = "← Back to Home";
+                    } else {
+                        link.setAttribute("href", newsHref);
+                        link.textContent = "← Back to News";
+                    }
+                } catch (e) {}
+            };
+
+            updateNewsBackLink();
+            document.addEventListener("astro:page-load", updateNewsBackLink);
+        })();
+    </script>
 </BaseLayout>

@@ -89,9 +89,11 @@ const withBase = (path: string) => {
                             {
                                 sortedNewsEntries
                                     .slice(0, 4)
-                                    .map((entry, index) => (
+                                    .map((entry) => (
                                         <a
-                                            href={withBase(`/news/${index}`)}
+                                            href={withBase(
+                                                `/news/${entry.slug}/`,
+                                            )}
                                             class="news-item"
                                         >
                                             <span class="news-item-title">
@@ -105,6 +107,14 @@ const withBase = (path: string) => {
                                         </a>
                                     ))
                             }
+                        </div>
+                        <div class="news-card-footer">
+                            <a
+                                href={withBase("/news/")}
+                                class="card-link"
+                            >
+                                View all news →
+                            </a>
                         </div>
                     </section>
 

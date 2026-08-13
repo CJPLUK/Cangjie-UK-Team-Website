@@ -835,6 +835,11 @@ a.brand-link:hover {
     color: #6c757d;
     margin-top: 0.2rem;
 }
+
+.news-card-footer {
+    margin-top: 1rem;
+    text-align: center;
+}
 .news-empty {
     font-size: 0.9rem;
     color: #94a3b8;
