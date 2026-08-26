@@ -1,0 +1,63 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const newsEntries: CollectionEntry<"news">[] = await getCollection("news");
+
+const parseDmyDate = (dmy: string) => {
+    const [day, month, year] = dmy.split("/");
+    return new Date(Number(year), Number(month) - 1, Number(day));
+};
+
+const formatDateForDisplay = (dmy: string) =>
+    new Intl.DateTimeFormat("en-GB", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    }).format(parseDmyDate(dmy));
+
+const sortedNewsEntries = newsEntries.sort(
+    (a, b) =>
+        parseDmyDate(b.data.date).getTime() -
+        parseDmyDate(a.data.date).getTime(),
+);
+
+const baseUrl = import.meta.env.BASE_URL;
+const withBase = (path: string) => {
+    if (path === "/") return baseUrl;
+    return `${baseUrl}${path.replace(/^\//, "")}`;
+};
+---
+
+<BaseLayout
+    title="News — The Cangjie Programming Language UK Team"
+    description="Read the latest news, releases, workshops, and community updates from The Cangjie Programming Language UK Team."
+>
+    <div class="container">
+        <header class="hero-section">
+            <h1 class="main-title">News</h1>
+        </header>
+
+        <main class="content">
+            <div class="projects-grid" aria-label="All news">
+                {
+                    sortedNewsEntries.map((entry) => (
+                        <a
+                            class="project-card"
+                            href={withBase(`/news/${entry.slug}/`)}
+                        >
+                            <h3>{entry.data.title}</h3>
+                            <time
+                                class="project-date"
+                                datetime={entry.data.date}
+                            >
+                                {formatDateForDisplay(entry.data.date)}
+                            </time>
+                        </a>
+                    ))
+                }
+            </div>
+        </main>
+    </div>
+</BaseLayout>
